@@ -32,7 +32,16 @@ def post(request, id):
 
     return HttpResponse(template.render(context, request))
 
-def about(request):
-    template = loader.get_template('post/about.html')
+def search(request):
+    searchString = request.GET["search"]
+    template = loader.get_template('post/searchResults.html')
 
-    return HttpResponse(template.render({}, request))
+    posts = Post.objects.filter(title__icontains=searchString)
+
+    context = {
+        "posts": posts,
+        "Title": "Search"
+    }
+
+    return HttpResponse(template.render(context, request))
+
