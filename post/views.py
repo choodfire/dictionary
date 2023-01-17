@@ -17,3 +17,17 @@ def mainPage(request):
     }
 
     return HttpResponse(template.render(context, request))
+
+def post(request, id):
+    template = loader.get_template('post/post.html')
+
+    post = Post.objects.get(id=id)
+    postsSeeAlso = Post.objects.filter(featured=False).order_by('-id')[:3]
+
+    context = {
+        "post": post,
+        "Title": post.title,
+        "postsSeeAlso": postsSeeAlso
+    }
+
+    return HttpResponse(template.render(context, request))

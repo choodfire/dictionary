@@ -2,11 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.108.0">
-    <title>Blog Template · Bootstrap v5.3</title>
+    <title>{{ Title }}</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/blog/">
 
@@ -59,7 +55,7 @@
       <div class="col-md-6 px-0">
         <h1 class="display-4 fst-italic">{{ featuredPost.title }}</h1>
         <p class="lead my-3">{{ featuredPost.description }}</p>
-        <p class="lead mb-0"><a href="#" class="text-white fw-bold">Continue reading...</a></p>
+        <p class="lead mb-0"><a href="{% url 'post' id=featuredPost.id %}" class="text-white fw-bold">Read</a></p>
       </div>
     </div>
   {% endfor %}
@@ -80,7 +76,7 @@
               <h3 class="mb-0">{{ post.title }}</h3>
               <div class="mb-1 text-muted">{{ post.releaseDate }}</div>
               <p class="card-text mb-auto">{{ post.description }}</p>
-              <a href="#" class="stretched-link">Continue reading</a>
+              <a href="{% url 'post' id=post.id %}" class="stretched-link">Read</a>
             </div>
             <div class="col-auto d-none d-lg-block">
 <!--              <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
