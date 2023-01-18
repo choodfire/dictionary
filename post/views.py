@@ -45,3 +45,7 @@ def search(request):
 
     return HttpResponse(template.render(context, request))
 
+def about(request):
+    template = loader.get_template('post/about.html')
+
+    return HttpResponse(template.render({}, request))
