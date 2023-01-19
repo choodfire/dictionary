@@ -31,10 +31,18 @@
             <input name="search" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2">
             <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
         </form>
-        <div class="btn-group">
-          <a class="btn btn-sm btn-outline-secondary" href="{% url 'login' %}" target="_blank" role="button">Log in</a>
-          <a class="btn btn-sm btn-outline-secondary" href="" target="_blank" role="button">Sign up</a>
-        </div>
+          {% if request.user.is_authenticated %}
+<!--            <li><a href="/logout">Log Out</a></li>-->
+              <div class="btn-group">
+                  <a class="btn btn-sm btn-outline-secondary" href="/logout"  role="button">Log out</a>
+              </div>
+          {% else %}
+            <div class="btn-group">
+              <a class="btn btn-sm btn-outline-secondary" href="{% url 'login' %}"  role="button">Log in</a>
+              <a class="btn btn-sm btn-outline-secondary" href="{% url 'signup' %}" role="button">Sign up</a>
+            </div>
+          {% endif %}
+
       </div>
     </div>
   </header>
