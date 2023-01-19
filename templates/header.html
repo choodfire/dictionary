@@ -34,7 +34,7 @@
           {% if request.user.is_authenticated %}
               <p>Welcome, {{ user.get_username }}. Thanks for logging in.</p>
               <div class="btn-group">
-                  <a class="btn btn-sm btn-outline-secondary" href="{% url 'create' %}"  role="button">Create post</a>
+                  <a class="btn btn-sm btn-outline-secondary" href="{% url 'createPost' %}"  role="button">Create post</a>
                   <a class="btn btn-sm btn-outline-secondary" href="/logout"  role="button">Log out</a>
               </div>
           {% else %}

@@ -4,12 +4,9 @@
 <body>
     <p></p>
     <h1>Create post</h1>
-    <form method="POST" action="createResult/">
+    <form method="POST" action="{% url 'createPost' %}" enctype="multipart/form-data">
         {% csrf_token %}
-        Title: <input name="title">
-        Description: <input name="description">
-        Text: <textarea id="text" name="text" rows="5" cols="33"></textarea>
-        Image: <input type="file" id="image" name="image" accept="image/*">
+        {{ form.as_p }}
         <input type="submit" value="Create" />
     </form>
 </body>

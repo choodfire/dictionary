@@ -1,9 +1,9 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template import loader
 from .models import Post
 from django.urls import reverse
-from .models import Post
+from .forms import AddPostForm
 
 # Create your views here.
 def mainPage(request):
@@ -51,18 +51,24 @@ def about(request):
 
     return HttpResponse(template.render({}, request))
 
-def create(request):
-    template = loader.get_template('post/createPost.html')
-    return HttpResponse(template.render({"Title": "Add post"}, request))
+def createPost(request):
+    if request.method == "POST":
+        form = AddPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            data = form.cleaned_data
+            newPost = Post(title=data['title'], description=data['description'], text=data['text'], image=data['image'])
+            newPost.save()
+            return redirect('mainPage')
+            # todo make through modelform
+    else:
+        form = AddPostForm()
 
-def createResult(request):
-    titleReceived = request.POST["title"]
-    descriptionReceived = request.POST["description"]
-    textReceived = request.POST["text"]
-    imageReceived = request.POST["image"]
-    newPost = Post(title=titleReceived, description=descriptionReceived, text=textReceived, image=imageReceived)
+    context = {
+        "form": form,
+        "Title": "Create post"
+    }
 
-    newPost.save()
+    return render(request, 'post/createPost.html', context)
 
-    return HttpResponseRedirect(reverse('mainPage'))
+
 
