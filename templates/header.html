@@ -32,8 +32,9 @@
             <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
         </form>
           {% if request.user.is_authenticated %}
-<!--            <li><a href="/logout">Log Out</a></li>-->
+              <p>Welcome, {{ user.get_username }}. Thanks for logging in.</p>
               <div class="btn-group">
+                  <a class="btn btn-sm btn-outline-secondary" href="{% url 'create' %}"  role="button">Create post</a>
                   <a class="btn btn-sm btn-outline-secondary" href="/logout"  role="button">Log out</a>
               </div>
           {% else %}

@@ -1,0 +1,17 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<body>
+    <p></p>
+    <h1>Create post</h1>
+    <form method="POST" action="createResult/">
+        {% csrf_token %}
+        Title: <input name="title">
+        Description: <input name="description">
+        Text: <textarea id="text" name="text" rows="5" cols="33"></textarea>
+        Image: <input type="file" id="image" name="image" accept="image/*">
+        <input type="submit" value="Create" />
+    </form>
+</body>
+
+{% endblock content %}

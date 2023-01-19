@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.template import loader
 from .models import Post
 from django.urls import reverse
+from .models import Post
 
 # Create your views here.
 def mainPage(request):
@@ -49,3 +50,19 @@ def about(request):
     template = loader.get_template('post/about.html')
 
     return HttpResponse(template.render({}, request))
+
+def create(request):
+    template = loader.get_template('post/createPost.html')
+    return HttpResponse(template.render({"Title": "Add post"}, request))
+
+def createResult(request):
+    titleReceived = request.POST["title"]
+    descriptionReceived = request.POST["description"]
+    textReceived = request.POST["text"]
+    imageReceived = request.POST["image"]
+    newPost = Post(title=titleReceived, description=descriptionReceived, text=textReceived, image=imageReceived)
+
+    newPost.save()
+
+    return HttpResponseRedirect(reverse('mainPage'))
+
