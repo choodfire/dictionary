@@ -71,22 +71,34 @@ def createPost(request):
     return render(request, 'post/createPost.html', context)
 
 def editPost(request, id):
-    if request.method == "POST":
-        currentPost = Post.objects.get(id=id)
-        currentPost = Post(title=request.POST["title"],
-                           description=request.POST["description"],
-                           text=request.POST["text"],
-                           image=request.POST["image"])
-        currentPost.save()
-        return redirect('mainPage')
-    else:
-        post = Post.objects.get(id=id)
-        context = {
-            "post": post,
-            "Title": "Edit post"
-        }
+    # if request.method == "POST":
+    #     currentPost = Post.objects.get(id=id)
+    #     currentPost = Post(title=request.POST["title"],
+    #                        description=request.POST["description"],
+    #                        text=request.POST["text"],
+    #                        image=request.POST["image"])
+    #     currentPost.save()
+    #     return redirect('mainPage')
+    # else:
+    #     post = Post.objects.get(id=id)
+    #     context = {
+    #         "post": post,
+    #         "Title": "Edit post"
+    #     }
+    #
+    #     return render(request, 'post/updatePost.html', context)
+    post = Post.objects.get(id=id)
+    form = PostForm(request.POST or None, instance=post)
+    if form.is_valid():
+        form.save()
+        return redirect('profile')
+    context = {
+        "post": post,
+        "Title": "Edit post",
+        "form": form,
+    }
 
-        return render(request, 'post/updatePost.html', context)
+    return render(request, 'post/updatePost.html', context)
 
 
 def deletePost(request, id):
