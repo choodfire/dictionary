@@ -19,3 +19,5 @@ def signup(request):
     }
 
     return render(request, 'registration/sign_up.html', context)
+
+def profile(request):

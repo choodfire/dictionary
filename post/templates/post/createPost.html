@@ -1,14 +1,18 @@
 {% extends 'main.html' %}
 {% block content %}
 
-<body>
-    <p></p>
-    <h1>Create post</h1>
-    <form method="POST" action="{% url 'createPost' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Create" />
-    </form>
-</body>
+{% if request.user.is_authenticated %}
+    <body>
+        <p></p>
+        <h1>Create post</h1>
+        <form method="POST" action="{% url 'createPost' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Create" />
+        </form>
+    </body>
+{% else %}
+    <h1>You need to <a href="{% url 'login' %}">log in</a> or <a href="{% url 'signup' %}">sign up</a> to create post</h1>
+{% endif %}
 
 {% endblock content %}

@@ -56,7 +56,7 @@ def createPost(request):
         form = AddPostForm(request.POST, request.FILES)
         if form.is_valid():
             data = form.cleaned_data
-            newPost = Post(title=data['title'], description=data['description'], text=data['text'], image=data['image'])
+            newPost = Post(title=data['title'], description=data['description'], text=data['text'], image=data['image'], creator=request.user)
             newPost.save()
             return redirect('mainPage')
             # todo make through modelform
