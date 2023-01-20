@@ -1,0 +1,16 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<body>
+  <h1>Update post</h1>
+    <form method="POST" action="edit/{{ post.id }}">
+        {% csrf_token %}
+        Title: <input name="title" value="{{ post.title }}">
+        Description: <input name="description" value="{{ post.description }}">
+        Text: <input name="text" value="{{ post.text }}">
+        Image: <input name="image" value="{{ post.image }}">
+        <input type="submit" value="Update" />
+    </form>
+</body>
+
+{% endblock content %}

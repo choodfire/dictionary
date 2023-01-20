@@ -1,7 +1,7 @@
 {% extends 'main.html' %}
 {% block content %}
 
-{% if post.count > 0 %}
+{% if posts.count > 0 %}
     <h1>Hello, {{ user.get_username }}. Here are your posts.</h1>
 {% else %}
     <h1>Hello, {{ user.get_username }}. You don't have posts. Create one <a href="{% url 'createPost' %}">here</a></h1>

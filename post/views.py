@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from .models import Post
 from django.urls import reverse
-from .forms import AddPostForm
+from .forms import PostForm
 
 # Create your views here.
 def mainPage(request):
@@ -53,15 +53,15 @@ def about(request):
 
 def createPost(request):
     if request.method == "POST":
-        form = AddPostForm(request.POST, request.FILES)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            data = form.cleaned_data
-            newPost = Post(title=data['title'], description=data['description'], text=data['text'], image=data['image'], creator=request.user)
-            newPost.save()
+            post = form.save(commit=False)
+            post.creator = request.user
+            post.save()
+
             return redirect('mainPage')
-            # todo make through modelform
     else:
-        form = AddPostForm()
+        form = PostForm()
 
     context = {
         "form": form,
@@ -71,7 +71,23 @@ def createPost(request):
     return render(request, 'post/createPost.html', context)
 
 def editPost(request, id):
-    pass
+    if request.method == "POST":
+        currentPost = Post.objects.get(id=id)
+        currentPost = Post(title=request.POST["title"],
+                           description=request.POST["description"],
+                           text=request.POST["text"],
+                           image=request.POST["image"])
+        currentPost.save()
+        return redirect('mainPage')
+    else:
+        post = Post.objects.get(id=id)
+        context = {
+            "post": post,
+            "Title": "Edit post"
+        }
+
+        return render(request, 'post/updatePost.html', context)
+
 
 def deletePost(request, id):
     postToDelete = Post.objects.get(id=id)
