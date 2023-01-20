@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from .forms import RegistrationForm
 from django.contrib.auth import login, logout, authenticate
-
+from django.template import loader
+from post.models import Post
+from django.http import HttpResponse
 # Create your views here.
 
 def signup(request):
@@ -21,3 +23,13 @@ def signup(request):
     return render(request, 'registration/sign_up.html', context)
 
 def profile(request):
+    template = loader.get_template('user/profile.html')
+
+    posts = Post.objects.filter(creator=request.user)
+
+    context = {
+        "posts": posts,
+        "Title": "Search"
+    }
+
+    return HttpResponse(template.render(context, request))

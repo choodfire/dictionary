@@ -70,5 +70,13 @@ def createPost(request):
 
     return render(request, 'post/createPost.html', context)
 
+def editPost(request, id):
+    pass
+
+def deletePost(request, id):
+    postToDelete = Post.objects.get(id=id)
+    postToDelete.delete()
+
+    return HttpResponseRedirect(reverse('profile'))
 
 
