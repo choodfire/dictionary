@@ -7,19 +7,6 @@ from .forms import PostForm
 from calendar import month_name
 
 # Create your views here.
-def mainPage(request):
-    template = loader.get_template('post/mainPage.html')
-
-    featuredPosts = Post.objects.filter(featured=True)
-    posts = Post.objects.filter(featured=False).order_by('-id')
-    # todo if no posts to html
-    context = {
-        "posts": posts,
-        'featuredPosts': featuredPosts,
-        "Title": "Blogs"
-    }
-
-    return HttpResponse(template.render(context, request))
 
 def post(request, id):
     template = loader.get_template('post/post.html')
@@ -69,11 +56,6 @@ def searchByDate(request, year, month):
 
     return HttpResponse(template.render(context, request))
 
-def about(request):
-    template = loader.get_template('post/about.html')
-
-    return HttpResponse(template.render({}, request))
-
 def createPost(request):
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
@@ -94,22 +76,6 @@ def createPost(request):
     return render(request, 'post/createPost.html', context)
 
 def editPost(request, id):
-    # if request.method == "POST":
-    #     currentPost = Post.objects.get(id=id)
-    #     currentPost = Post(title=request.POST["title"],
-    #                        description=request.POST["description"],
-    #                        text=request.POST["text"],
-    #                        image=request.POST["image"])
-    #     currentPost.save()
-    #     return redirect('mainPage')
-    # else:
-    #     post = Post.objects.get(id=id)
-    #     context = {
-    #         "post": post,
-    #         "Title": "Edit post"
-    #     }
-    #
-    #     return render(request, 'post/updatePost.html', context)
     post = Post.objects.get(id=id)
     form = PostForm(request.POST or None, instance=post)
     if form.is_valid():

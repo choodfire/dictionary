@@ -5,3 +5,5 @@ media/images
 db.sqlite3
 media
 __pycache__
+.coverage
+htmlcov
