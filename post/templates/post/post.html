@@ -2,40 +2,35 @@
 {% block content %}
 
 <main class="container">
-
-    <div class="row g-1">
-      <div class="col-md-100">
-
-        <article class="blog-post">
-          <h2 class="blog-post-title mb-1">{{ post.title }}</h2>
+  <div class="row g-1">
+    <div class="col-md-100">
+      <article class="blog-post">
+        <h2 class="blog-post-title mb-1">{{ post.title }}</h2>
   <!--        <p class="blog-post-meta">January 1, 2021 by <a href="#">Mark</a></p>-->
-          <p class="blog-post-meta">{{ post.releaseDate }}</p>
-          <img src="{{ post.image.url }}" class="bd-placeholder-img">
-          <p>{{ post.text }}</p>
-       </article>
+        <p class="blog-post-meta">{{ post.releaseDate }}</p>
+        <img src="{{ post.image.url }}" class="bd-placeholder-img">
+        <p>{{ post.text }}</p>
+      </article>
 
-      </div>
     </div>
+  </div>
 
+  <p>See also</p>
 
-    <p>See also</p>
-
-    {% for post in postsSeeAlso %}
+  {% for post in postsSeeAlso %}
     <div class="row mb-1">
       <div class="col-md-100">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
           <div class="col p-4 d-flex flex-column position-static">
-<!--            <strong class="d-inline-block mb-2 text-primary">World</strong>-->
             <h3 class="mb-0">{{ post.title }}</h3>
             <div class="mb-1 text-muted">{{ post.releaseDate }}</div>
             <p class="card-text mb-auto">{{ post.description }}</p>
             <a href="{% url 'post' id=post.id %}" class="stretched-link">Read</a>
           </div>
-
         </div>
       </div>
     </div>
-    {% endfor %}
+  {% endfor %}
 
 </main>
 

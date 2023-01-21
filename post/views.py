@@ -6,14 +6,11 @@ from django.urls import reverse
 from .forms import PostForm
 from calendar import month_name
 
-# Create your views here.
-
 def post(request, id):
     template = loader.get_template('post/post.html')
 
     post = Post.objects.get(id=id)
     postsSeeAlso = Post.objects.filter(featured=False).order_by('-id')[:3]
-
     context = {
         "post": post,
         "Title": post.title,
@@ -27,9 +24,7 @@ def search(request):
     template = loader.get_template('post/searchResults.html')
 
     posts = Post.objects.filter(title__icontains=searchString)
-
     searchTitle = f"Found by \"{searchString}\""
-
     context = {
         "posts": posts,
         "Title": "Search",
@@ -43,11 +38,8 @@ def searchByDate(request, year, month):
     template = loader.get_template('post/searchResults.html')
 
     posts = Post.objects.filter(releaseDate__year=year, releaseDate__month=month)
-
     monthString = month_name[month]
-
     searchString = f"Posts from {monthString} {year}"
-
     context = {
         "posts": posts,
         "Title": "Search",
@@ -81,6 +73,7 @@ def editPost(request, id):
     if form.is_valid():
         form.save()
         return redirect('profile')
+
     context = {
         "post": post,
         "Title": "Edit post",

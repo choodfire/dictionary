@@ -3,6 +3,7 @@ from django.template import loader
 from django.http import HttpResponse
 from post.models import Post
 # Create your views here.
+
 def mainPage(request):
     template = loader.get_template('core/mainPage.html')
 
