@@ -20,4 +20,8 @@ def mainPage(request):
 def about(request):
     template = loader.get_template('core/about.html')
 
-    return HttpResponse(template.render({}, request))
+    context = {
+        "Title": "About"
+    }
+
+    return HttpResponse(template.render(context, request))

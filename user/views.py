@@ -17,7 +17,8 @@ def signup(request):
         form = RegistrationForm()
 
     context = {
-        "form": form
+        "form": form,
+        "Title": "Sign up"
     }
 
     return render(request, 'registration/sign_up.html', context)
@@ -27,9 +28,11 @@ def profile(request):
 
     posts = Post.objects.filter(creator=request.user)
 
+    title = f"Profile {request.user.username}"
+
     context = {
         "posts": posts,
-        "Title": "Search"
+        "Title": title
     }
 
     return HttpResponse(template.render(context, request))
