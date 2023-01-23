@@ -5,16 +5,20 @@ from .models import Post
 from django.urls import reverse
 from .forms import PostForm
 from calendar import month_name
+from comment.models import Comment
 
 def post(request, id):
     template = loader.get_template('post/post.html')
 
     post = Post.objects.get(id=id)
     postsSeeAlso = Post.objects.filter(featured=False).order_by('-id')[:3]
+    comments = Comment.objects.filter(post=post)
+
     context = {
         "post": post,
         "Title": post.title,
-        "postsSeeAlso": postsSeeAlso
+        "postsSeeAlso": postsSeeAlso,
+        "comments": comments
     }
 
     return HttpResponse(template.render(context, request))

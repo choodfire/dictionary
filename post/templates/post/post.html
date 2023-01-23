@@ -32,6 +32,21 @@
     </div>
   {% endfor %}
 
+
+  <h1> {{ comments.count }} comments </h1>
+
+
+
+  {% for comment in comments %}
+<!--    <h2>{{ comment.commentCreator }}</h2>-->
+<!--    <h4>  {{ comment.text }}</h4>-->
+    <div class="card" style="width: 36rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{ comment.commentCreator }}, {{ comment.datetime }}</h5>
+        <p class="card-text">{{ comment.text }}</p>
+      </div>
+    </div>
+  {% endfor %}
 </main>
 
 
