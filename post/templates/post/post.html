@@ -7,7 +7,7 @@
       <article class="blog-post">
         <h2 class="blog-post-title mb-1">{{ post.title }}</h2>
   <!--        <p class="blog-post-meta">January 1, 2021 by <a href="#">Mark</a></p>-->
-        <p class="blog-post-meta">{{ post.releaseDate }}</p>
+        <p class="blog-post-meta">{{ post.releaseDate | date:"d F, Y G:i" }}</p>
         <img src="{{ post.image.url }}" class="bd-placeholder-img">
         <p>{{ post.text }}</p>
       </article>
@@ -23,7 +23,7 @@
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
           <div class="col p-4 d-flex flex-column position-static">
             <h3 class="mb-0">{{ post.title }}</h3>
-            <div class="mb-1 text-muted">{{ post.releaseDate }}</div>
+            <div class="mb-1 text-muted">{{ post.releaseDate | date:"d F, Y G:i" }}</div>
             <p class="card-text mb-auto">{{ post.description }}</p>
             <a href="{% url 'post' id=post.id %}" class="stretched-link">Read</a>
           </div>
@@ -53,7 +53,7 @@
       <div class="card-body">
         <h5 class="card-title">{{ comment.commentCreator }}</h5>
         <p class="card-text">{{ comment.text }}</p>
-        <p class="card-text">{{ comment.datetime }}</p>
+        <p class="card-text">{{ comment.datetime | date:"d F, Y G:i" }}</p>
       </div>
     </div>
   {% endfor %}

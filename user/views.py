@@ -1,38 +1,48 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, DetailView, TemplateView, CreateView
+
 from .forms import RegistrationForm
 from django.contrib.auth import login, logout, authenticate
 from django.template import loader
 from post.models import Post
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 # Create your views here.
 
-def signup(request):
-    if request.method == "POST":
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('mainPage')
-    else:
-        form = RegistrationForm()
+class SignUp(CreateView):
+    form_class = RegistrationForm
+    template_name = 'registration/sign_up.html'
 
-    context = {
-        "form": form,
-        "Title": "Sign up"
-    }
+    def get_title(self):
+        return "Sign up"
 
-    return render(request, 'registration/sign_up.html', context)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['Title'] = self.get_title()
+        return context
 
-def profile(request):
-    template = loader.get_template('user/profile.html')
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return HttpResponseRedirect(self.get_successful_url())
 
-    posts = Post.objects.filter(creator=request.user)
+    def get_successful_url(self):
+        return reverse('mainPage')
 
-    title = f"Profile {request.user.username}"
 
-    context = {
-        "posts": posts,
-        "Title": title
-    }
+class Profile(TemplateView):
+    model = Post
+    template_name = "user/profile.html"
 
-    return HttpResponse(template.render(context, request))
+    def get_posts(self):
+        return Post.objects.filter(creator=self.request.user)
+
+    def get_title(self):
+        return f"Profile {self.request.user.username}"
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.get_title()
+        context['posts'] = self.get_posts()
+
+        return context
