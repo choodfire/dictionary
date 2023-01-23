@@ -35,15 +35,25 @@
 
   <h1> {{ comments.count }} comments </h1>
 
-
+  {% if request.user.is_authenticated %}
+    <h1>Add a comment</h1>
+    <form method="POST" action="{% url 'post' id=post.id %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Comment" />
+    </form>
+  {% else %}
+    <h3><a href="{% url 'login' %}">Log in</a> or <a href="{% url 'signup' %}">sign up</a> to write one!</h3>
+  {% endif %}
 
   {% for comment in comments %}
 <!--    <h2>{{ comment.commentCreator }}</h2>-->
 <!--    <h4>  {{ comment.text }}</h4>-->
     <div class="card" style="width: 36rem;">
       <div class="card-body">
-        <h5 class="card-title">{{ comment.commentCreator }}, {{ comment.datetime }}</h5>
+        <h5 class="card-title">{{ comment.commentCreator }}</h5>
         <p class="card-text">{{ comment.text }}</p>
+        <p class="card-text">{{ comment.datetime }}</p>
       </div>
     </div>
   {% endfor %}

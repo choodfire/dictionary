@@ -6,19 +6,32 @@ from django.urls import reverse
 from .forms import PostForm
 from calendar import month_name
 from comment.models import Comment
+from comment.forms import CommentForm
 
 def post(request, id):
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.commentCreator = request.user
+            comment.post = Post.objects.get(id=id)
+            comment.save()
+
+            return redirect(reverse('post', kwargs={ 'id': id }))
+
     template = loader.get_template('post/post.html')
 
     post = Post.objects.get(id=id)
     postsSeeAlso = Post.objects.filter(featured=False).order_by('-id')[:3]
-    comments = Comment.objects.filter(post=post)
+    comments = Comment.objects.filter(post=post).order_by('-id')
+    form = CommentForm()
 
     context = {
         "post": post,
         "Title": post.title,
         "postsSeeAlso": postsSeeAlso,
-        "comments": comments
+        "comments": comments,
+        "form": form
     }
 
     return HttpResponse(template.render(context, request))
@@ -84,7 +97,7 @@ def editPost(request, id):
         "form": form,
     }
 
-    return render(request, 'post/updatePost.html', context)
+    return render(request, 'post/editPost.html', context)
 
 
 def deletePost(request, id):
