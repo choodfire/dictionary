@@ -22,8 +22,8 @@ def post(request, id):
     template = loader.get_template('post/post.html')
 
     post = Post.objects.get(id=id)
-    postsSeeAlso = Post.objects.filter(featured=False).order_by('-id')[:3]
-    comments = Comment.objects.filter(post=post).order_by('-id')
+    postsSeeAlso = Post.objects.filter(featured=False).exclude(id=post.id)[:3]
+    comments = Comment.objects.filter(post=post)
     form = CommentForm()
 
     context = {

@@ -8,7 +8,7 @@ def mainPage(request):
     template = loader.get_template('core/mainPage.html')
 
     featuredPosts = Post.objects.filter(featured=True)
-    posts = Post.objects.filter(featured=False).order_by('-id')
+    posts = Post.objects.filter(featured=False)
     context = {
         "posts": posts,
         'featuredPosts': featuredPosts,
