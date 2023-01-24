@@ -1,38 +1,18 @@
-from django.shortcuts import render
-from django.template import loader
-from django.http import HttpResponse
 from django.views.generic import TemplateView
-
+from views.mixins import TitleMixin
 from post.models import Post
-# Create your views here.
 
-class MainPage(TemplateView):
+class MainPage(TitleMixin, TemplateView): # todo mb listview
     template_name = 'core/mainPage.html'
-
-    def get_title(self):
-        return "Blogs"
-
-    def get_featured_posts(self):
-        return Post.objects.filter(featured=True)
-
-    def get_non_featured_posts(self):
-        return Post.objects.filter(featured=False)
+    title = "Articles"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['Title'] = self.get_title()
-        context['posts'] = self.get_non_featured_posts()
-        context['featuredPosts'] = self.get_featured_posts()
+        context['posts'] = Post.objects.filter(featured=False)
+        context['featuredPosts'] = Post.objects.filter(featured=True)
         return context
 
-class About(TemplateView):
+
+class About(TitleMixin, TemplateView):
     template_name = 'core/about.html'
-
-    def get_title(self):
-        return "About"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['Title'] = self.get_title()
-
-        return context
+    title = "About"
