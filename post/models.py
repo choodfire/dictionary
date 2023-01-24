@@ -9,8 +9,8 @@ class Post(models.Model):
     description = models.CharField(max_length=255)
     text = models.TextField(max_length=20000)
     image = models.ImageField(upload_to="images")
-    releaseDate = models.DateTimeField(null=False, blank=False, default=django.utils.timezone.now)
-    featured = models.BooleanField(default=False)
+    releaseDate = models.DateTimeField(null=True, blank=True, default=django.utils.timezone.now)
+    featured = models.BooleanField(null=True, blank=True, default=False)
 
     def __str__(self):
         return self.title

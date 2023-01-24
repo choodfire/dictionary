@@ -1,3 +1,4 @@
+from django.contrib.auth.views import LogoutView, LoginView
 from django.urls import reverse
 from django.views.generic import TemplateView, CreateView
 from .forms import RegistrationForm
@@ -18,7 +19,7 @@ class SignUp(TitleMixin, CreateView):
         return HttpResponseRedirect(self.get_successful_url())
 
     def get_successful_url(self):
-        return reverse('mainPage')
+        return reverse('core:mainPage')
 
 
 class Profile(TitleMixin, TemplateView):
@@ -33,3 +34,13 @@ class Profile(TitleMixin, TemplateView):
         context['posts'] = Post.objects.filter(creator=self.request.user)
 
         return context
+
+class Logout(LogoutView):
+    def get_success_url(self):
+        return reverse('core:mainPage')
+
+class Login(LoginView):
+    template_name = 'registration/login.html'
+
+    def get_success_url(self):
+        return reverse('core:mainPage')

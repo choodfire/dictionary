@@ -25,7 +25,7 @@
             <h3 class="mb-0">{{ post.title }}</h3>
             <div class="mb-1 text-muted">{{ post.releaseDate | date:"d F, Y G:i" }}</div>
             <p class="card-text mb-auto">{{ post.description }}</p>
-            <a href="{% url 'post' pk=post.id %}" class="stretched-link">Read</a>
+            <a href="{% url 'post:post' pk=post.id %}" class="stretched-link">Read</a>
           </div>
         </div>
       </div>
@@ -37,13 +37,13 @@
 
   {% if request.user.is_authenticated %}
     <h1>Add a comment</h1>
-    <form method="POST" action="{% url 'post' pk=post.id %}">
+    <form method="POST" action="{% url 'post:post' pk=post.id %}">
       {% csrf_token %}
       {{ form.as_p }}
       <input type="submit" value="Comment" />
     </form>
   {% else %}
-    <h3><a href="{% url 'login' %}">Log in</a> or <a href="{% url 'signup' %}">sign up</a> to write one!</h3>
+    <h3><a href="{% url 'profile:login' %}">Log in</a> or <a href="{% url 'profile:signup' %}">sign up</a> to write one!</h3>
   {% endif %}
 
   {% for comment in comments %}

@@ -7,7 +7,7 @@
       <div class="col-md-6 px-0">
         <h1 class="display-4 fst-italic">{{ featuredPost.title }}</h1>
         <p class="lead my-3">{{ featuredPost.description }}</p>
-        <p class="lead mb-0"><a href="{% url 'post' pk=featuredPost.id %}" class="text-white fw-bold">Read</a></p>
+        <p class="lead mb-0"><a href="{% url 'post:post' pk=featuredPost.id %}" class="text-white fw-bold">Read</a></p>
       </div>
     </div>
   {% endfor %}
@@ -22,7 +22,7 @@
             <h3 class="mb-0">{{ post.title }}</h3>
             <div class="mb-1 text-muted">{{ post.releaseDate | date:"d F, Y G:i" }}</div>
             <p class="card-text mb-auto">{{ post.description }}</p>
-            <a href="{% url 'post' pk=post.id %}" class="stretched-link">Read</a>
+            <a href="{% url 'post:post' pk=post.id %}" class="stretched-link">Read</a>
           </div>
           <div class="col-auto d-none d-lg-block">
             <img src="{{ post.image.url }}" width="200" height="250" class="bd-placeholder-img">
@@ -30,7 +30,7 @@
         </div>
       </div>
     {% empty %}
-      <h1>No posts. <a href="{% url 'login' %}">Log in</a> or <a href="{% url 'signup' %}">sign up</a> to create one!</h1>
+      <h1>No posts. <a href="{% url 'profile:login' %}">Log in</a> or <a href="{% url 'profile:signup' %}">sign up</a> to create one!</h1>
     {% endfor %}
 
     </div>

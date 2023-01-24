@@ -4,14 +4,14 @@
 {% if request.user.is_authenticated %}
   <body>
     <h1>Create post</h1>
-    <form method="POST" action="{% url 'createPost' %}" enctype="multipart/form-data">
+    <form method="POST" action="{% url 'post:createPost' %}" enctype="multipart/form-data">
       {% csrf_token %}
       {{ form.as_p }}
       <input type="submit" value="Create" />
     </form>
   </body>
 {% else %}
-  <h1>You need to <a href="{% url 'login' %}">log in</a> or <a href="{% url 'signup' %}">sign up</a> to create post</h1>
+  <h1>You need to <a href="{% url 'profile:login' %}">log in</a> or <a href="{% url 'profile:signup' %}">sign up</a> to create post</h1>
 {% endif %}
 
 {% endblock content %}

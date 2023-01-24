@@ -1,8 +1,11 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.views.generic import DeleteView, UpdateView, CreateView, DetailView, MonthArchiveView, ListView
 from django.views.generic.edit import FormMixin
+
+from .forms import PostForm
 from .models import Post
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from calendar import month_name
 from comment.models import Comment
 from comment.forms import CommentForm
@@ -30,10 +33,10 @@ class PostView(FormMixin, TitleMixin, DetailView):
         form = self.get_form()
         comment = form.save(commit=False)
         comment.commentCreator = self.request.user
-        comment.post = self.get_object()
+        comment.post = self.object
         comment.save()
 
-        return redirect(reverse('post', kwargs={'pk': self.get_object().id}))
+        return redirect(reverse('post:post', kwargs={'pk': self.object.id}))
 
 
 class Search(TitleMixin, ListView):
@@ -63,13 +66,27 @@ class CreatePost(TitleMixin, CreateView):
     model = Post
     title = "Create post"
     fields = ['title', 'description', 'text', 'image']
+    template_name = 'post/createPost.html'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.creator = self.request.user
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('post:post', kwargs={'pk': self.object.id})
 
 
 class EditPost(TitleMixin, UpdateView):
     model = Post
     title = "Edit post"
     fields = ['title', 'description', 'text', 'image']
-    template_name_suffix = '_update_form'
+    template_name = 'post/editPost.html'
+
+    def get_success_url(self):
+        # return reverse_lazy('post:post', args = (self.object.id,))
+        return reverse('post:post', kwargs={'pk': self.object.id})
 
 
 class DeletePost(TitleMixin, DeleteView):
@@ -77,4 +94,4 @@ class DeletePost(TitleMixin, DeleteView):
     title = "Delete post"
 
     def get_success_url(self):
-        return reverse('mainPage')
+        return reverse('user:profile')
