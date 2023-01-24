@@ -1,11 +1,10 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.views.generic import DeleteView, UpdateView, CreateView, DetailView, MonthArchiveView, ListView
 from django.views.generic.edit import FormMixin
-
-from .forms import PostForm
 from .models import Post
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from calendar import month_name
 from comment.models import Comment
 from comment.forms import CommentForm
@@ -89,9 +88,11 @@ class EditPost(TitleMixin, UpdateView):
         return reverse('post:post', kwargs={'pk': self.object.id})
 
 
-class DeletePost(TitleMixin, DeleteView):
+class DeletePost(LoginRequiredMixin, TitleMixin, DeleteView):
     model = Post
     title = "Delete post"
+    login_url = '/login/'
+    template_name = 'post/deletePost.html'
 
     def get_success_url(self):
         return reverse('user:profile')

@@ -1,5 +1,8 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LogoutView, LoginView
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, CreateView
 from .forms import RegistrationForm
 from django.contrib.auth import login
@@ -21,10 +24,10 @@ class SignUp(TitleMixin, CreateView):
     def get_successful_url(self):
         return reverse('core:mainPage')
 
-
-class Profile(TitleMixin, TemplateView):
+class Profile(LoginRequiredMixin, TitleMixin, TemplateView):
     model = Post
     template_name = "user/profile.html"
+    login_url = '/login/'
 
     def get_title(self):
         return self.request.user.username

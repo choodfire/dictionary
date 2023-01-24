@@ -1,0 +1,17 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<body>
+  {% if request.user == post.creator %}
+    <h1>Update post</h1>
+    <form method="POST" action="">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Update" />
+    </form>
+  {% else %}
+    <h1>You can't delete this post</h1>
+  {% endif %}
+</body>
+
+{% endblock content %}
