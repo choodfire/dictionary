@@ -1,7 +1,9 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
-from django.views.generic import DeleteView, UpdateView, CreateView
+from django.views.generic import DeleteView, UpdateView, CreateView, DetailView, TemplateView, MonthArchiveView, \
+    ListView
+from django.views.generic.edit import FormMixin
 
 from .models import Post
 from django.urls import reverse
@@ -10,62 +12,64 @@ from calendar import month_name
 from comment.models import Comment
 from comment.forms import CommentForm
 
-def post(request, id):
-    if request.method == "POST":
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.commentCreator = request.user
-            comment.post = Post.objects.get(id=id)
-            comment.save()
+class PostView(DetailView, FormMixin):
+    template_name = 'post/post.html'
+    queryset = Post.objects.all()
+    form_class = CommentForm
 
-            return redirect(reverse('post', kwargs={ 'id': id }))
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        post = self.get_object()
+        context['Title'] = post.title
+        context['postsSeeAlso'] = Post.objects.filter(featured=False).exclude(id=post.id)[:3]
+        context['comments'] = Comment.objects.filter(post=post)
+        context['form'] = CommentForm
+        return context
 
-    template = loader.get_template('post/post.html')
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        comment = form.save(commit=False)
+        comment.commentCreator = self.request.user
+        comment.post = self.get_object()
+        comment.save()
 
-    post = Post.objects.get(id=id)
-    postsSeeAlso = Post.objects.filter(featured=False).exclude(id=post.id)[:3]
-    comments = Comment.objects.filter(post=post)
-    form = CommentForm()
-
-    context = {
-        "post": post,
-        "Title": post.title,
-        "postsSeeAlso": postsSeeAlso,
-        "comments": comments,
-        "form": form
-    }
-
-    return HttpResponse(template.render(context, request))
-
-def search(request):
-    searchString = request.GET["search"]
-    template = loader.get_template('post/searchResults.html')
-
-    posts = Post.objects.filter(title__icontains=searchString)
-    searchTitle = f"Found by \"{searchString}\""
-    context = {
-        "posts": posts,
-        "Title": "Search",
-        "searchString": searchTitle
-    }
-
-    return HttpResponse(template.render(context, request))
+        return redirect(reverse('post', kwargs={ 'pk': self.get_object().id }))
 
 
-def searchByDate(request, year, month):
-    template = loader.get_template('post/searchResults.html')
+# def search(request):
+#     searchString = request.GET["search"]
+#     template = loader.get_template('post/searchResults.html')
+#
+#     posts = Post.objects.filter(title__icontains=searchString)
+#     searchTitle = f"Found by \"{searchString}\""
+#     context = {
+#         "posts": posts,
+#         "Title": "Search",
+#         "searchString": searchTitle
+#     }
+#
+#     return HttpResponse(template.render(context, request))
 
-    posts = Post.objects.filter(releaseDate__year=year, releaseDate__month=month)
-    monthString = month_name[month]
-    searchString = f"Posts from {monthString} {year}"
-    context = {
-        "posts": posts,
-        "Title": "Search",
-        "searchString": searchString
-    }
+class Search(ListView):
+    model = Post
+    template_name = 'post/searchResults.html'
 
-    return HttpResponse(template.render(context, request))
+    def get_queryset(self):
+        return Post.objects.filter(title__icontains=self.request.GET['search'])
+
+class SearchByDate(MonthArchiveView):
+    template_name = 'post/searchResults.html'
+    queryset = Post.objects.all()
+    date_field = "releaseDate"
+    allow_future = False
+    allow_empty = True
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['Title'] = "Search"
+        context['searchString'] = f"Posts from {month_name[self.get_month()]} {self.get_year()}"
+        return context
 
 
 class CreatePost(CreateView):

@@ -15,18 +15,18 @@
 
   <div class="row g-5">
     <div class="col-md-8">
-      {% if posts.count > 0 %}
+      {% if object_list.count > 0 %}
         <h1>{{ searchString }}</h1>
       {% endif %}
 
-      {% for post in posts %}
+      {% for post in object_list %}
         <div class="col-md-20">
           <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
             <div class="col p-4 d-flex flex-column position-static">
               <h3 class="mb-0">{{ post.title }}</h3>
               <div class="mb-1 text-muted">{{ post.releaseDate | date:"d F, Y G:i" }}</div>
               <p class="card-text mb-auto">{{ post.description }}</p>
-              <a href="{% url 'post' id=post.id %}" class="stretched-link">Read</a>
+              <a href="{% url 'post' pk=post.id %}" class="stretched-link">Read</a>
             </div>
             <div class="col-auto d-none d-lg-block">
               <img src="{{ post.image.url }}" width="200" height="250" class="bd-placeholder-img">
