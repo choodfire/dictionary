@@ -1,12 +1,8 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect, get_object_or_404
-from django.template import loader
-from django.views.generic import DeleteView, UpdateView, CreateView, DetailView, TemplateView, MonthArchiveView, \
-    ListView
+from django.shortcuts import redirect
+from django.views.generic import DeleteView, UpdateView, CreateView, DetailView, MonthArchiveView, ListView
 from django.views.generic.edit import FormMixin
 from .models import Post
 from django.urls import reverse
-from .forms import PostForm
 from calendar import month_name
 from comment.models import Comment
 from comment.forms import CommentForm
@@ -37,7 +33,7 @@ class PostView(FormMixin, TitleMixin, DetailView):
         comment.post = self.get_object()
         comment.save()
 
-        return redirect(reverse('post', kwargs={ 'pk': self.get_object().id }))
+        return redirect(reverse('post', kwargs={'pk': self.get_object().id}))
 
 
 class Search(TitleMixin, ListView):
@@ -47,6 +43,7 @@ class Search(TitleMixin, ListView):
 
     def get_queryset(self):
         return Post.objects.filter(title__icontains=self.request.GET['search'])
+
 
 class SearchByDate(TitleMixin, MonthArchiveView):
     template_name = 'post/searchResults.html'

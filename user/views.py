@@ -1,11 +1,11 @@
 from django.urls import reverse
 from django.views.generic import TemplateView, CreateView
-
 from .forms import RegistrationForm
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login
 from post.models import Post
 from django.http import HttpResponseRedirect
 from views.mixins import TitleMixin
+
 
 class SignUp(TitleMixin, CreateView):
     form_class = RegistrationForm

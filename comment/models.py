@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 import django.utils.timezone
 from post.models import Post
 
-# Create your models here.
 
 class Comment(models.Model):
     commentCreator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='commentCreator')

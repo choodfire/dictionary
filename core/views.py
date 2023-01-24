@@ -2,7 +2,8 @@ from django.views.generic import TemplateView
 from views.mixins import TitleMixin
 from post.models import Post
 
-class MainPage(TitleMixin, TemplateView): # todo mb listview
+
+class MainPage(TitleMixin, TemplateView):  # todo mb listview
     template_name = 'core/mainPage.html'
     title = "Articles"
 
