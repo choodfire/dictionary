@@ -15,6 +15,17 @@
   <div class="row g-5">
     <div class="col-md-8">
 
+{#    <div class="dropdown">#}
+{#      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">#}
+{#        Sort by#}
+{#      </button>#}
+{#      <ul class="dropdown-menu">#}
+{#        <li><a class="dropdown-item" href="{% url 'core:mainPage' %}?sort_type=by_date">Release date</a></li>#}
+{#        <li><a class="dropdown-item" href="{% url 'core:mainPage' %}?sort_type=by_name">Name</a></li>#}
+{#        <li><a class="dropdown-item" href="{% url 'core:mainPage' %}?sort_type=by_popularity">Popularity</a></li>#}
+{#      </ul>#}
+{#    </div>#}
+
     {% for post in posts %}
       <div class="col-md-12">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">

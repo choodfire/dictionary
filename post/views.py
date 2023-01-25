@@ -9,6 +9,7 @@ from calendar import month_name
 from comment.models import Comment
 from comment.forms import CommentForm
 from views.mixins import TitleMixin
+from post.filters import PostFilter
 
 
 class PostView(FormMixin, TitleMixin, DetailView):
@@ -43,8 +44,17 @@ class Search(TitleMixin, ListView):
     template_name = 'post/searchResults.html'
     title = "Search"
 
+    def get_filters(self):
+        return PostFilter(self.request.GET)
+
     def get_queryset(self):
-        return Post.objects.filter(title__icontains=self.request.GET['search'])
+        return self.get_filters().qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filters'] = self.get_filters()
+
+        return context
 
 
 class SearchByDate(TitleMixin, MonthArchiveView):
@@ -96,3 +106,4 @@ class DeletePost(LoginRequiredMixin, TitleMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('user:profile')
+

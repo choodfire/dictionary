@@ -1,9 +1,12 @@
 {% extends 'main.html' %}
+{#{% load bootstrap %}#}
+{#{% load django_bootstrap5 %}#}
 {% block content %}
 
 <form method="post">
     {% csrf_token %}
     {{ form }}
+{#    {{ bootstrap_form form }}#}
     <button type="submit" class="btn btn-success">Sign up</button>
 </form>
 

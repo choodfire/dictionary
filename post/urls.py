@@ -5,7 +5,6 @@ app_name = 'post'
 
 urlpatterns = [
     path('post/<int:pk>/', views.PostView.as_view(), name='post'),
-    # path('results/', views.search, name='search'),
     path('results/', views.Search.as_view(), name='search'),
     path('results/<int:year>/<int:month>/', views.SearchByDate.as_view(month_format='%m'), name='searchByDate'),
     path('create/', views.CreatePost.as_view(), name='createPost'),

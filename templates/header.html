@@ -9,6 +9,10 @@
 
     <link href="/node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <script href="/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script type="javascript" src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+    <script type="javascript" src="dist/js/bootstrap.js"></script>
+    <link src="dist/css/bootstrap.css" rel="stylesheet">
 
   </head>
 
@@ -20,7 +24,7 @@
       </div>
       <div class="col-4 d-flex justify-content-end align-items-center">
         <form class="input-group mb-1" method="get" action="/results">
-          <input name="search" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2">
+          <input name="title" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2">
           <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
         </form>
         {% if request.user.is_authenticated %}
