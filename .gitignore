@@ -1,6 +1,5 @@
 venv
 .idea
-dictionary/settings.py
 media/images
 db.sqlite3
 media
