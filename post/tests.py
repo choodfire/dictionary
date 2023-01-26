@@ -19,6 +19,7 @@ class ClassStr(TestCase):
     def testStr(self):
         self.assertEqual(str(self.post), "Django article")
 
+
 class FilterTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
@@ -40,6 +41,7 @@ class FilterTest(TestCase):
         rightRes = Post.objects.filter(title__icontains="Odd")
 
         self.assertEqual(list(filterRes), list(rightRes)) # list because queryset object has many attributes that useless but may be different
+
 
 class Response200Test(TestCase):
     def setUp(self):
@@ -70,8 +72,6 @@ class Response200Test(TestCase):
 
         response = self.client.post('/delete/1/', args={})
         self.assertEqual(response.status_code, 302) # redirect
-
-        # response =
 
     def testWithParams(self):
         response = self.client.get('/post/1/')
