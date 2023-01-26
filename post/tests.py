@@ -1,8 +1,11 @@
-from django.test import TestCase
+from django.test import TestCase, Client
+from django.urls import reverse
+from datetime import datetime
 from .models import Post
 from django.contrib.auth.models import User
 from post.filters import PostFilter
 from django.test.client import RequestFactory
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 class ClassStr(TestCase):
@@ -19,7 +22,7 @@ class ClassStr(TestCase):
 class FilterTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
-        qset = None
+
         for i in range(1, 11):
             if i % 2 == 0:
                 Post.objects.create(title=f"Odd{i}",
@@ -37,3 +40,42 @@ class FilterTest(TestCase):
         rightRes = Post.objects.filter(title__icontains="Odd")
 
         self.assertEqual(list(filterRes), list(rightRes)) # list because queryset object has many attributes that useless but may be different
+
+class Response200Test(TestCase):
+    def setUp(self):
+        self.client = Client()
+        Post.objects.create(title=f"Post1",
+                            description="Test descr",
+                            text="Test text",
+                            image=SimpleUploadedFile(name='test_image.jpg', content=open('/home/ruslan/Pictures/Screenshots/Screenshot from 2023-01-17 17-36-04.png', 'rb').read(), content_type='image/jpeg'))
+
+    def testWithoutParams(self):
+        response = self.client.get('post:post')
+        self.assertEqual(response.status_code, 404)
+
+        response = self.client.get('/results/', args={})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get(f'/results/{datetime.now().year}/{datetime.now().month}/', args={})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/login/', {'username': 'qq', 'password': 'zxccxz88'})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(reverse('post:createPost'))
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/edit/1/', args={})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/delete/1/', args={})
+        self.assertEqual(response.status_code, 302) # redirect
+
+        # response =
+
+    def testWithParams(self):
+        response = self.client.get('/post/1/')
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get('/results/', args={'title': 'post'})
+        self.assertEqual(response.status_code, 200)
